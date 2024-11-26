@@ -1,3 +1,6 @@
+// Load environment variables from .env file
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs'); // For password hashing
@@ -9,7 +12,7 @@ app.set('view engine', 'ejs');
 app.use(express.static("public"));
 
 // MongoDB connection using Mongoose
-const db = 'mongodb://localhost:27017/userDB';
+const db = process.env.DB_URI; // Access the DB_URI from environment variables
 mongoose.connect(db)
     .then(() => console.log('MongoDB connected'))
     .catch(err => {
@@ -32,8 +35,6 @@ app.get('/register', (req, res) => {
 app.get('/secrets', (req, res) => {
     res.render('secrets');
 });
-
-
 
 // Registration Route
 app.post('/register', async (req, res) => {
@@ -97,7 +98,7 @@ app.post('/login', async (req, res) => {
 });
 
 // Starting the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000; // Use PORT from environment variable or default to 3000
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
