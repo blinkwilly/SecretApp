@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const encrypt = require('mongoose-encryption');
+require('dotenv').config(); // Make sure dotenv is loaded
 
 // Define the User schema
 const userSchema = new mongoose.Schema({
@@ -8,8 +9,8 @@ const userSchema = new mongoose.Schema({
     sensitiveData: { type: String }, // This field will be encrypted
 });
 
-// Encryption key for mongoose-encryption (use environment variables for production)
-const secretKey = "yourEncryptionKey123";
+// Encryption key for mongoose-encryption (using environment variables)
+const secretKey = process.env.SECRET_KEY; // Use the SECRET_KEY from .env
 userSchema.plugin(encrypt, {
     secret: secretKey,
     encryptedFields: ['sensitiveData'], // Only encrypt this field
